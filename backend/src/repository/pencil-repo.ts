@@ -3,6 +3,7 @@ import PencilModel from '../models/pencil'
 
 interface PencilRepo {
   getPencils(): Promise<Array<PencilInterface>>
+  addPencil(pencil: PencilInterface): Promise<PencilInterface>
 }
 
 class PencilRepoImpl implements PencilRepo {
@@ -14,6 +15,10 @@ class PencilRepoImpl implements PencilRepo {
 
   async getPencils(): Promise<PencilInterface[]> {
     return PencilModel.find()
+  }
+
+  async addPencil(pencil: PencilInterface): Promise<PencilInterface> {
+    return PencilModel.create(pencil)
   }
 }
 

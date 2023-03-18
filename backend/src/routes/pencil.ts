@@ -15,6 +15,17 @@ const pencilRouter = (server: FastifyInstance, opts: RouteShorthandOptions, done
     }
   })
 
+  server.post('/v1/pencils', opts, async (request, reply) => {
+    try {
+      const reqBody: Pencil = request.body as Pencil
+      const pencil: Pencil = await pencilRepo.addPencil(reqBody)
+      return reply.status(201).send(pencil)
+    } catch (error) {
+      console.error(`POST /pencils Error: ${error}`)
+      return reply.status(500).send(`[Server Error]: ${error}`)
+    }
+  })
+
   done()
 }
 

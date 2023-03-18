@@ -3,10 +3,6 @@ import { Pencil } from '../types/pencil'
 
 const pencilSchema: Schema = new Schema(
   {
-    id: {
-      type: Number,
-      required: true
-    },
     color: {
       type: String,
       default: 'defaultColor'
@@ -16,5 +12,10 @@ const pencilSchema: Schema = new Schema(
     timestamps: true
   }
 )
+
+pencilSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false
+})
 
 export default model<Pencil>('Pencil', pencilSchema)
