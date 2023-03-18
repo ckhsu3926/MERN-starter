@@ -14,7 +14,7 @@ describe('my test suite01', () => {
 describe('test my server', () => {
   let server: FastifyInstance
   beforeAll(() => {
-    server = startFastify(8888)
+    server = startFastify('0.0.0.0', 8888)
   })
 
   test('ping should return pong', async () => {
@@ -25,3 +25,5 @@ describe('test my server', () => {
     expect(res.msg).toBe('pong')
   })
 })
+
+describe('<TODO> test db connection', () => {})

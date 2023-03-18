@@ -1,4 +1,5 @@
 import fastify, { FastifyInstance } from 'fastify'
+import { establishConnection } from './plugins/mongoose'
 
 const server: FastifyInstance = fastify({
   logger: {
@@ -9,17 +10,16 @@ const server: FastifyInstance = fastify({
   }
 })
 
-const startFastify: (port: number) => FastifyInstance = (port) => {
-  const listenAddress = '0.0.0.0'
-  const fastifyConfig = {
-    port: port,
-    host: listenAddress
-  }
+const startFastify: (host: string, port: number) => FastifyInstance = (host, port) => {
+  const fastifyConfig = { port, host }
 
   server.listen(fastifyConfig, (error, _) => {
     if (error) {
       console.error(error)
     }
+
+    // connect mongodb
+    establishConnection()
   })
 
   server.get('/ping', async (_, reply) => {

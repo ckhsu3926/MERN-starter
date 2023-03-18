@@ -5,10 +5,11 @@ import { Pencil } from '../types/pencil'
 
 describe('Form test', () => {
   let server: FastifyInstance
+  const fastifyHost = '0.0.0.0'
   const fastifyPort = 8888
 
   beforeAll(async () => {
-    server = startFastify(fastifyPort)
+    server = startFastify(fastifyHost, fastifyPort)
   })
 
   it('should successfully get a empty list of all pencils', async () => {
