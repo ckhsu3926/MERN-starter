@@ -5,6 +5,8 @@ interface PencilRepo {
   getPencils(): Promise<Array<PencilInterface>>
   getPencilById(id: String): Promise<PencilInterface | null>
   addPencil(pencil: PencilInterface): Promise<PencilInterface>
+  updatePencil(id: String, pencil: PencilInterface): Promise<PencilInterface | null>
+  deletePencil(id: String): Promise<PencilInterface | null>
 }
 
 class PencilRepoImpl implements PencilRepo {
@@ -24,6 +26,14 @@ class PencilRepoImpl implements PencilRepo {
 
   async addPencil(pencil: PencilInterface): Promise<PencilInterface> {
     return PencilModel.create(pencil)
+  }
+
+  async updatePencil(id: string, pencil: PencilInterface): Promise<PencilInterface | null> {
+    return PencilModel.findByIdAndUpdate(id, pencil, { new: true })
+  }
+
+  async deletePencil(id: String): Promise<PencilInterface | null> {
+    return PencilModel.findByIdAndDelete(id)
   }
 }
 
