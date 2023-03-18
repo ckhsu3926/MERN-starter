@@ -1,1 +1,28 @@
+# Server heartbeat
 GET http://localhost:8888/ping
+###
+# Get All Pencils
+GET http://localhost:8888/api/v1/pencils
+###
+# Add Pencil
+POST http://localhost:8888/api/v1/pencils
+Content-Type: application/json
+
+{
+    "color": "red"
+}
+###
+# Update Pencil
+PUT http://localhost:8888/api/v1/pencils/${id}
+Content-Type: application/json
+
+{
+    "color": "blue",
+    "used": false
+}
+###
+# Delete Pencil
+DELETE http://localhost:8888/api/v1/pencils/${id}
+###
+# Get Specific Pencil
+GET http://localhost:8888/api/v1/pencils/${id}

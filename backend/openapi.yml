@@ -1,0 +1,131 @@
+openapi: '3.0.2'
+info:
+  title: MERN starter - PencilBox
+  version: '0.1'
+
+servers:
+  - url: http://localhost:8888
+    description: localhost develop
+
+tags:
+  - name: Pencils
+
+components:
+  schemas:
+    Pencil:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        color:
+          type: string
+          example: red
+
+paths:
+  /pencils:
+    get:
+      summary: Return all pencils
+      tags:
+        - 'Pencils'
+      responses:
+        '200':
+          description: A JSON array of pencils
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pencils:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pencil'
+    post:
+      summary: Add New pencil
+      tags:
+        - 'Pencils'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                color:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Pencil'
+  /pencils/{id}:
+    get:
+      summary: Get specific pencil
+      tags:
+        - 'Pencils'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Pencel id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: pencil info
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Pencil'
+        '404':
+          description: pencil not found
+    put:
+      summary: Update Pencil Info
+      tags:
+        - 'Pencils'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Pencel id
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                color:
+                  type: string
+      responses:
+        '200':
+          description: Updated pencil info
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Pencil'
+        '404':
+          description: pencil not found
+    delete:
+      summary: Delete Pencil
+      tags:
+        - 'Pencils'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Pencel id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete ok
+        '404':
+          description: pencil not found
