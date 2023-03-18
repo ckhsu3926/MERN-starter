@@ -5,6 +5,10 @@ import { PencilRepoImpl } from '../repository/pencil-repo'
 const pencilRouter = (server: FastifyInstance, opts: RouteShorthandOptions, done: (error?: Error) => void) => {
   const pencilRepo = PencilRepoImpl.of()
 
+  interface IdParam {
+    id: string
+  }
+
   server.get('/v1/pencils', opts, async (_, reply) => {
     try {
       const pencils: Array<Pencil> = await pencilRepo.getPencils()
@@ -22,6 +26,21 @@ const pencilRouter = (server: FastifyInstance, opts: RouteShorthandOptions, done
       return reply.status(201).send(pencil)
     } catch (error) {
       console.error(`POST /pencils Error: ${error}`)
+      return reply.status(500).send(`[Server Error]: ${error}`)
+    }
+  })
+
+  server.get<{ Params: IdParam }>('/v1/pencils/:id', opts, async (request, reply) => {
+    try {
+      const id = request.params.id
+      const pencil: Pencil | null = await pencilRepo.getPencilById(id)
+      if (pencil) {
+        return reply.status(200).send(pencil)
+      } else {
+        return reply.status(404).send({ msg: `Not Found Pencil: ${id}` })
+      }
+    } catch (error) {
+      console.error(`GET /pencils/${request.params.id} Error: ${error}`)
       return reply.status(500).send(`[Server Error]: ${error}`)
     }
   })
