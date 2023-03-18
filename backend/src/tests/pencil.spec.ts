@@ -1,7 +1,8 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { afterEach, afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { FastifyInstance } from 'fastify'
 import { startFastify } from '../server'
 import { Pencil } from '../types/pencil'
+import * as dbHandler from './db'
 
 describe('Form test', () => {
   let server: FastifyInstance
@@ -9,7 +10,17 @@ describe('Form test', () => {
   const fastifyPort = 8888
 
   beforeAll(async () => {
+    await dbHandler.connect()
     server = startFastify(fastifyHost, fastifyPort)
+  })
+
+  afterEach(async () => {
+    await dbHandler.clearDatabase()
+  })
+
+  afterAll(async () => {
+    await dbHandler.closeDatabase()
+    server.close((): void => {})
   })
 
   it('should successfully get a empty list of all pencils', async () => {

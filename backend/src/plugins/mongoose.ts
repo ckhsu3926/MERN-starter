@@ -5,13 +5,15 @@ const port = process.env.MONGO_PORT || 27017
 const database = process.env.MONGO_DATABASE || 'fastify'
 
 export const establishConnection = () => {
-  mongoose.connect(`mongodb://${host}:${port}/${database}`)
+  if (!process.env.JEST_WORKER_ID && mongoose.connection.readyState === 0) {
+    mongoose.connect(`mongodb://${host}:${port}/${database}`)
 
-  mongoose.connection.on('connected', () => {
-    console.log('MongoDB connection successful.')
-  })
+    mongoose.connection.on('connected', () => {
+      console.log('MongoDB connection successful.')
+    })
 
-  mongoose.connection.on('error', (err) => {
-    console.error('Error in DB connection: ', JSON.stringify(err, undefined, 2))
-  })
+    mongoose.connection.on('error', (err) => {
+      console.error('Error in DB connection: ', JSON.stringify(err, undefined, 2))
+    })
+  }
 }
